@@ -1,0 +1,68 @@
+<!doctype HTML>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="numberGuessCSS.css" />
+  <title>The Incredible Guessing Game</title>
+</head>
+<body>
+
+<header>
+  <h1 id='title'>The Incredible Guessing Game</h1>
+</header>
+
+<div id='center'>
+  <h2 id = 'topText'>Welcome to our wonderful bestest ever game</h2>
+  <h3 id = 'instructions'>Try to guess the correct number from 1 to 100</h3>
+  <h3 id = 'guessesLeft'>Guesses Remaining: 7</h3>
+</div>
+
+<div id='input'>
+  <p>Your Guess:
+    <input id='guess' type="text" name="yourGuess: " placeholder = "Your Guess" autofocus/>
+    <button id='submit' type='button' onClick='makeGuess()'>Submit</button>
+  </p>
+<div id='output'>
+<ul id='past guesses'>
+</ul>
+</div>
+
+</body>
+
+<script>
+  var g= document.getElementById('guess')
+  var answer=Math.floor((Math.random()*100+1));
+  var guessesLeft=7;
+  var solved=false;
+  var instructions=document.getElementById('instructions')
+  var guessString=document.getElementById('guessesLeft')
+  function makeGuess(){
+    guess = g.value
+    g.value=''
+    guessesLeft-=1
+    if (guessesLeft==0){
+      instructions.innerHTML="You ran out of guesses. The correct answer was "+answer
+      guessString.innerHTML="Guesses Remaining: "+guessesLeft
+    }
+    else{
+      if (guess==answer){
+        solved=true;
+        instructions.innerHTML="You guessed correctly! Congratulations!"
+        running=false;
+      }
+      else{
+        if (guess>answer){
+          instructions.innerHTML="Incorrect! Your guess was too high"
+          guessString.innerHTML="Guesses Remaining: "+guessesLeft
+        }
+        else if (guess<answer){
+          instructions.innerHTML="Incorrect! Your guess was too low"
+          guessString.innerHTML="Guesses Remaining: "+guessesLeft
+        }
+      }
+    }
+  }
+</script>
+
+
+</html>
+
