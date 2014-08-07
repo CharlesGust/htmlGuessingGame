@@ -24,45 +24,52 @@
 </div>
 
 <div id = 'output'>
-<ul id = 'past guesses'>
-</ul>
+<p id = 'pastGuesses'></p>
 </div>
 
 </body>
 
 <script>
-  var g = document.getElementById('guess')
+  var g = document.getElementById('guess');
   var answer = Math.floor((Math.random() * 100 + 1));
   var guessesLeft = 7;
-  var solved = false;
-  var instructions = document.getElementById('instructions')
-  var guessString = document.getElementById('guessesLeft')
+  var instructions = document.getElementById('instructions');
+  var guessString = document.getElementById('guessesLeft');
+  var finished = false;
+  var pastGuesses = document.getElementById('pastGuesses');
 
   function makeGuess(){
     guess = g.value
     g.value = ''
-    guessesLeft -= 1
-    if (guessesLeft == 0){
-      instructions.innerHTML = "You ran out of guesses. The correct answer was " + answer
-      guessString.innerHTML = "Guesses Remaining: " + guessesLeft
-    }
-    else{
-      if (guess == answer){
-        solved = true;
-        instructions.innerHTML = "You guessed correctly! Congratulations!"
-        running = false;
+    if(!finished){
+      if (guessesLeft == 0){
+        instructions.innerHTML = "You ran out of guesses. The correct answer was " + answer;
+        guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
+        finished = true;
       }
       else{
-        if (guess > answer){
-          instructions.innerHTML = "Incorrect! Your guess was too high"
-          guessString.innerHTML = "Guesses Remaining: " + guessesLeft
+        guessesLeft -= 1
+        if (guess == answer){
+          instructions.innerHTML = "You guessed correctly! Congratulations!";
+          guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
+          finished = true;
+          pastGuesses.innerHTML = pastGuesses.innerHTML + guess + " was the correct answer! <br />"
         }
-        else if (guess < answer){
-          instructions.innerHTML = "Incorrect! Your guess was too low"
-          guessString.innerHTML = "Guesses Remaining: " + guessesLeft
+        else{
+          if (guess > answer){
+            instructions.innerHTML = "Incorrect! Your guess was too high";
+            guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
+            pastGuesses.innerHTML = pastGuesses.innerHTML + guess + " was too high. <br />"
+          }
+          else if (guess < answer){
+            instructions.innerHTML = "Incorrect! Your guess was too low";
+            guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
+            pastGuesses.innerHTML = pastGuesses.innerHTML + guess + " was too low. <br />"
+          }
         }
       }
     }
+    else{}
   }
 </script>
 
