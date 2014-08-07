@@ -18,7 +18,7 @@
 
 <div id = 'input'>
   <p>Your Guess:
-    <input id = 'guess' type = "text" name = "yourGuess: " placeholder = "Your Guess" autofocus/>
+    <input id = 'guess' type = "text" name = "yourGuess: " placeholder = "Your Guess" onkeyup='checkEnter(event)' autofocus/>
     <button id = 'submit' type = 'button' onClick = 'makeGuess()'>Submit</button>
   </p>
 </div>
@@ -30,18 +30,42 @@
 </body>
 
 <script>
+  //declares variables for HTML ids
   var g = document.getElementById('guess');
-  var answer = Math.floor((Math.random() * 100 + 1));
-  var guessesLeft = 7;
   var instructions = document.getElementById('instructions');
   var guessString = document.getElementById('guessesLeft');
-  var finished = false;
   var pastGuesses = document.getElementById('pastGuesses');
-
+  //declares variables for use by game
+  var answer = Math.floor((Math.random() * 100 + 1));
+  var guessesLeft = 7;
+  var finished = false;
+  //runs makeGuess() if user presses enter while focused on text input
+  function checkEnter(e){
+    var enter = 13;
+    if (e.which == enter){
+      makeGuess();
+    }
+  }
+  //checks if the guess is an integer from 1-100
+  function validateGuess(s){
+    var check1 = !isNaN(s);
+    var check2 = s % 1 == 0;
+    var check3 = s <= 100;
+    var check4 = s > 0
+    return check1 && check2 && check3 && check4
+  }
+  //runs once every time a number is submitted
   function makeGuess(){
-    guess = g.value
+    //stores the value in the text input as var guess, then clears text input
+    var guess = g.value
     g.value = ''
-    if(!finished){
+    //if input is invalid, tels the user and does not take away a guess
+    if (!validateGuess(guess) && !finished){
+      instructions.innerHTML = guess + " is not a valid input. Try again."
+    }
+    //if the program is not finished this runs
+    else if(!finished){
+      //if there are no guesses left, a message is displayed and finished is set to true, preventing further input
       if (guessesLeft == 0){
         instructions.innerHTML = "You ran out of guesses. The correct answer was " + answer;
         guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
@@ -49,6 +73,7 @@
       }
       else{
         guessesLeft -= 1
+        //if the guess matches the answer, a message is displayed and finished is set to true
         if (guess == answer){
           instructions.innerHTML = "You guessed correctly! Congratulations!";
           guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
@@ -56,6 +81,7 @@
           pastGuesses.innerHTML = pastGuesses.innerHTML + guess + " was the correct answer! <br />"
         }
         else{
+          //determines if the guess was too high or low, displays the appropriate message, and logs the result into pastGuesses in the HTML
           if (guess > answer){
             instructions.innerHTML = "Incorrect! Your guess was too high";
             guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
@@ -69,10 +95,10 @@
         }
       }
     }
+    //nothing happens after finished is set to true.
     else{}
   }
 </script>
 
 
 </html>
-
