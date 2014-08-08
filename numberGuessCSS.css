@@ -1,8 +1,48 @@
 #title {
+  font-family: Arial;
   text-align: center;
-  background-color: #ddd;
+  font-size: 50px;
+  margin-top: 150px;
+  margin-bottom: 0;
+}
+
+html{
+  margin:0;
+  background: linear-gradient(white, black);
+  height: 100%
+}
+
+#topText{
+  font-size: 32px
+}
+
+#instructions{
+  font-size: 28px;
+}
+
+#guess{
+  font-size: 24px;
+}
+
+#submit{
+  font-size: 24px;
+}
+
+#guessP{
+  font-size: 24px;
+}
+
+#guessesLeft{
+  margin-bottom: 0;
+  font-size: 20px;
+}
+
+#pastGuesses{
+  font-size: 20px;
 }
 
 div {
   text-align: center;
+  font-family: Arial, sans-serif;
 }
+

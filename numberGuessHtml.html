@@ -13,15 +13,16 @@
 <div id = 'center'>
   <h2 id = 'topText'>Welcome to our wonderful bestest ever game</h2>
   <h3 id = 'instructions'>Try to guess the correct number from 1 to 100</h3>
-  <h3 id = 'guessesLeft'>Guesses Remaining: 7</h3>
 </div>
 
 <div id = 'input'>
-  <p>Your Guess:
+  <p id = 'guessP'>Your Guess:
     <input id = 'guess' type = "text" name = "yourGuess: " placeholder = "Your Guess" onkeyup='checkEnter(event)' autofocus/>
     <button id = 'submit' type = 'button' onClick = 'makeGuess()'>Submit</button>
   </p>
 </div>
+
+<div><h3 id = 'guessesLeft'>Guesses Remaining: 7</h3></div>
 
 <div id = 'output'>
 <p id = 'pastGuesses'></p>
@@ -59,46 +60,43 @@
     //stores the value in the text input as var guess, then clears text input
     var guess = g.value
     g.value = ''
-    //if input is invalid, tels the user and does not take away a guess
+    //if input is invalid, tells the user and does not take away a guess
     if (!validateGuess(guess) && !finished){
       instructions.innerHTML = guess + " is not a valid input. Try again."
     }
     //if the program is not finished this runs
     else if(!finished){
-      //if there are no guesses left, a message is displayed and finished is set to true, preventing further input
-      if (guessesLeft == 0){
-        instructions.innerHTML = "You ran out of guesses. The correct answer was " + answer;
-        guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
-        finished = true;
-      }
-      else{
-        guessesLeft -= 1
+      if (guessesLeft>0){
+        guessesLeft-=1
         //if the guess matches the answer, a message is displayed and finished is set to true
         if (guess == answer){
           instructions.innerHTML = "You guessed correctly! Congratulations!";
           guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
           finished = true;
-          pastGuesses.innerHTML = pastGuesses.innerHTML + guess + " was the correct answer! <br />"
+          pastGuesses.innerHTML = pastGuesses.innerHTML + guess + " was the correct answer!<br />"
         }
         else{
           //determines if the guess was too high or low, displays the appropriate message, and logs the result into pastGuesses in the HTML
           if (guess > answer){
             instructions.innerHTML = "Incorrect! Your guess was too high";
             guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
-            pastGuesses.innerHTML = pastGuesses.innerHTML + guess + " was too high. <br />"
+            pastGuesses.innerHTML = pastGuesses.innerHTML + guess + " was too high.<br />"
           }
           else if (guess < answer){
             instructions.innerHTML = "Incorrect! Your guess was too low";
             guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
-            pastGuesses.innerHTML = pastGuesses.innerHTML + guess + " was too low. <br />"
+            pastGuesses.innerHTML = pastGuesses.innerHTML + guess + " was too low.<br />"
           }
+        }
+      //if there are no guesses left and the guess was not correct in this call of the function, a message is displayed and finished is set to true, preventing further input
+      if (guessesLeft == 0 && !finished){
+        instructions.innerHTML = "You ran out of guesses. The correct answer was " + answer;
+        finished = true;
+      }
+
         }
       }
     }
     //nothing happens after finished is set to true.
-    else{}
-  }
 </script>
-
-
 </html>
