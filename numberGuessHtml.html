@@ -1,41 +1,52 @@
 <!doctype HTML>
 <html>
-<head>
-  <link rel = "stylesheet" type = "text/css" href = "numberGuessCSS.css" />
-  <title>The Incredible Guessing Game</title>
-</head>
+  <head>
+    <link rel = "stylesheet" type = "text/css" href = "numberGuessCSS.css" />
+    <title>The Incredible Guessing Game</title>
+  </head>
 <body>
-<div id = 'difficultyButtons'>
-  Difficulty:
-  <button id = 'difficulty1' type = 'button' onClick = 'changeDifficulty(0)'>Easy</button>
-  <button id = 'difficulty2' type = 'button' onClick = 'changeDifficulty(1)'>Normal</button>
-  <button id = 'difficulty3' type = 'button' onClick = 'changeDifficulty(2)'>Hard</button>
-  <button id = 'difficulty4' type = 'button' onClick = 'changeDifficulty(3)'>Insane</button>
-  (Choosing a difficulty restarts your current game)
-</div>
-<header>
-  <h1 id = 'title'>The Incredible Guessing Game</h1>
-</header>
-<div id = 'center'>
-  <h2 id = 'topText'>Try to guess the correct number from 1 to 100</h2>
-  <h3 id = 'instructions'>Type in your guess and press enter</h3>
-</div>
-<div id = 'input'>
-  <p id = 'guessP'>Your Guess:
-    <input id = 'guess' type = "text" name = "yourGuess: " placeholder = "Your Guess" onkeyup='checkEnter(event)' autofocus/>
-    <button id = 'submit' type = 'button' onClick = 'makeGuess()'>Submit</button>
-  </p>
-</div>
-<div><h3 id = 'guessesLeft'>Guesses Remaining: 7</h3></div>
-<div id = 'output'>
-  <p id = 'pastGuesses'></p>
-</div>
-<footer>
-  <div id = 'wins'>Wins: 0</div>
-  <div id = 'losses'>Losses: 0</div>
-</footer>
+  <div id="guessBox">
+    <header>
+      <h1 id = 'title'>The Incredible Guessing Game</h1>
+    </header>
+  <div id = 'center'>
+    <h2 id = 'topText'>Try to guess the correct number from 1 to 100</h2>
+    <h3 id = 'instructions'>Type in your guess and press enter</h3>
+  </div>
+  <div id = 'input'>
+    <span>
+      <form onsubmit="return false">
+        Reset difficulty
+        <select name="difficultySetting" onchange="changeDifficulty(value);">
+          <option value=0>Easy</option>
+          <option value=1 selected="value" selected>Normal</option>
+          <option value=2>Hard</option>
+          <option value=3>Insane</option>
+        <select>
+      <input id = 'guess' type = "text" name = "yourGuess: " placeholder = "Your Guess" onkeyup='checkEnter(event)' autofocus/>
+      <button id = 'submit' type = 'button' onClick = 'makeGuess()'>Submit</button>
+      </form>
+    </span>
+  </div>
+  <div><h3 id = 'guessesLeft'>Guesses Remaining: 7</h3></div>
+  <div id = 'output'>
+    <p id = 'pastGuesses'></p>
+  </div>
+  </div>
+  <footer>
+    <div id = 'wins'>Wins: 0</div>
+    <div id = 'losses'>Losses: 0</div>
+  </footer>
 </body>
 <script>
+  function approxLog2(nNumber) {
+    var iCount = 0;
+    for(iCount = 0; nNumber > 0; iCount++) {
+      nNumber /= 2;
+    }
+    return iCount;
+  }
+
   //declares variables for HTML ids
   var g = document.getElementById('guess');
   var instructions = document.getElementById('instructions');
@@ -70,6 +81,7 @@
     var check4 = s > 0;
     return check1 && check2 && check3 && check4;
   }
+
   //updates the pastGuesses HTML element, and ensures that no more than 17 previous guesses are shown to make sure they don't run off the screen.
   function updatePastGuesses(s){
     pastGuesses.innerHTML = ''
@@ -81,6 +93,7 @@
       pastGuesses.innerHTML = pastGuesses.innerHTML + guessList[i]
     }
   }
+
   //updates all HTML elements based on previous guess
   function updateHtml(guess, answer, guessesLeft){
     if (guess == answer){
@@ -113,8 +126,8 @@
   }
   //changes the difficulty. This is called by the difficulty buttons.
   function changeDifficulty(n){
-    difficulty = n
-    reset()
+    difficulty = n;
+    reset();
   }
   //resets all values to start a new game
   function reset(){
