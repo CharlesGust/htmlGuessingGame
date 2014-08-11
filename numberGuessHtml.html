@@ -1,0 +1,152 @@
+<!doctype HTML>
+<html>
+<head>
+  <link rel = "stylesheet" type = "text/css" href = "numberGuessCSS.css" />
+  <title>The Incredible Guessing Game</title>
+</head>
+<body>
+<div id = 'difficultyButtons'>
+  Difficulty:
+  <button id = 'difficulty1' type = 'button' onClick = 'changeDifficulty(0)'>Easy</button>
+  <button id = 'difficulty2' type = 'button' onClick = 'changeDifficulty(1)'>Normal</button>
+  <button id = 'difficulty3' type = 'button' onClick = 'changeDifficulty(2)'>Hard</button>
+  <button id = 'difficulty4' type = 'button' onClick = 'changeDifficulty(3)'>Insane</button>
+  (Choosing a difficulty restarts your current game)
+</div>
+<header>
+  <h1 id = 'title'>The Incredible Guessing Game</h1>
+</header>
+<div id = 'center'>
+  <h2 id = 'topText'>Try to guess the correct number from 1 to 100</h2>
+  <h3 id = 'instructions'>Type in your guess and press enter</h3>
+</div>
+<div id = 'input'>
+  <p id = 'guessP'>Your Guess:
+    <input id = 'guess' type = "text" name = "yourGuess: " placeholder = "Your Guess" onkeyup='checkEnter(event)' autofocus/>
+    <button id = 'submit' type = 'button' onClick = 'makeGuess()'>Submit</button>
+  </p>
+</div>
+<div><h3 id = 'guessesLeft'>Guesses Remaining: 7</h3></div>
+<div id = 'output'>
+  <p id = 'pastGuesses'></p>
+</div>
+<footer>
+  <div id = 'wins'>Wins: 0</div>
+  <div id = 'losses'>Losses: 0</div>
+</footer>
+</body>
+<script>
+  //declares variables for HTML ids
+  var g = document.getElementById('guess');
+  var instructions = document.getElementById('instructions');
+  var guessString = document.getElementById('guessesLeft');
+  var pastGuesses = document.getElementById('pastGuesses');
+  var buttonText = document.getElementById('submit');
+  var winText = document.getElementById('wins');
+  var lossText = document.getElementById('losses');
+  var topText = document.getElementById('topText');
+  //declares variables for use by game
+  var difficulty = 1
+  var difficulties = [10, 100, 10000, 4217984542368487952]
+  var difficultyGuesses = [4, 7, 14, 62]
+  var answer = Math.floor((Math.random() * difficulties[difficulty] + 1));
+  var guessesLeft = difficultyGuesses[difficulty];
+  var finished = false;
+  var wins = 0
+  var losses = 0
+  var guessList = []
+  //runs makeGuess() if user presses enter while focused on text input
+  function checkEnter(e){
+    var enter = 13;
+    if (e.which == enter){
+      makeGuess();
+    }
+  }
+  //checks if the guess is an integer from 1-100
+  function validateGuess(s){
+    var check1 = !isNaN(s);
+    var check2 = s % 1 == 0;
+    var check3 = s <= difficulties[difficulty];
+    var check4 = s > 0;
+    return check1 && check2 && check3 && check4;
+  }
+  //updates the pastGuesses HTML element, and ensures that no more than 17 previous guesses are shown to make sure they don't run off the screen.
+  function updatePastGuesses(s){
+    pastGuesses.innerHTML = ''
+    guessList.push(s)
+    if (guessList.length > 17){
+      guessList.splice(0, 1)
+    }
+    for (i = guessList.length - 1; i >= 0; i--){
+      pastGuesses.innerHTML = pastGuesses.innerHTML + guessList[i]
+    }
+  }
+  //updates all HTML elements based on previous guess
+  function updateHtml(guess, answer, guessesLeft){
+    if (guess == answer){
+      instructions.innerHTML = "You guessed correctly! Congratulations!";
+      guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
+      finished = true;
+      wins += 1
+      winText.innerHTML = 'Wins: ' + wins
+      buttonText.innerHTML = 'Reset'
+      updatePastGuesses(guess + " was the correct answer!<br />")
+    }
+    else if (guess > answer){
+      instructions.innerHTML = "Incorrect! Your guess was too high";
+      guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
+      updatePastGuesses(guess + " was too high.<br />")
+    }
+    else if (guess < answer){
+      instructions.innerHTML = "Incorrect! Your guess was too low";
+      guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
+      updatePastGuesses(guess + " was too low.<br />")
+    }
+
+    if (guessesLeft == 0 && !finished) {
+      instructions.innerHTML = "You ran out of guesses. The correct answer was " + answer;
+      losses += 1
+      lossText.innerHTML = "Losses: " + losses;
+      finished = true;
+      buttonText.innerHTML = 'Reset';
+    };
+  }
+  //changes the difficulty. This is called by the difficulty buttons.
+  function changeDifficulty(n){
+    difficulty = n
+    reset()
+  }
+  //resets all values to start a new game
+  function reset(){
+    answer = Math.floor((Math.random() * difficulties[difficulty] + 1));
+    guessesLeft = difficultyGuesses[difficulty];
+    finished = false;
+    topText.innerHTML = 'Try to guess the correct number from 1 to '+difficulties[difficulty]
+    instructions.innerHTML = 'Type in your guess and press enter'
+    guessString.innerHTML = "Guesses Remaining: " + guessesLeft;
+    pastGuesses.innerHTML = ''
+    buttonText.innerHTML = 'Submit'
+    guessList=[]
+  }
+
+  //runs once every time a number is submitted
+  function makeGuess(){
+    //stores the value in the text input as var guess, then clears text input
+    var guess = g.value
+    g.value = ''
+    //if input is invalid, tells the user and does not take away a guess
+    if (!validateGuess(guess) && !finished){
+      instructions.innerHTML = guess + " is not a valid input. Try again."
+    }
+    //if the program is not finished this runs
+    else if(!finished){
+      guessesLeft-=1
+      updateHtml(guess, answer, guessesLeft)
+      }
+    //nothing happens after finished is set to true.
+    else{
+      reset()
+    }
+    }
+</script>
+</html>

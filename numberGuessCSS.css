@@ -1,0 +1,76 @@
+#title {
+  font-family: Arial;
+  text-align: center;
+  font-size: 50px;
+  margin-top: 150px;
+  margin-bottom: 0;
+}
+
+body{
+  background-color: black
+  margin: 0;
+}
+
+html{
+  margin:0;
+  background: linear-gradient(white, black);
+  height: 100%
+}
+
+#topText{
+  font-size: 32px
+}
+
+#instructions{
+  font-size: 28px;
+}
+
+#guess{
+  font-size: 24px;
+}
+
+#submit{
+  font-size: 24px;
+}
+
+#guessP{
+  font-size: 24px;
+}
+
+#guessesLeft{
+  margin-bottom: 0;
+  font-size: 20px;
+}
+
+#pastGuesses{
+  font-size: 20px;
+}
+
+#wins{
+  float: left;
+  font-size: 20px;
+}
+
+#losses{
+  float:right;
+  font-size: 20px;
+}
+
+footer{
+  color: white;
+  width: 99%;
+  position: fixed;
+  bottom: 0;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+div {
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+#difficultyButtons {
+  position: fixed;
+  top: 0;
+}
